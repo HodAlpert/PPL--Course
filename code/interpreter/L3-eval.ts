@@ -18,7 +18,9 @@ import { allT, first, rest, second } from '../Support_functions/list';
 
 // ========================================================
 // Eval functions
-
+if(11){
+    console.log("test");
+}
 const L3applicativeEval = (exp: CExp | Error, env: Env): Value | Error =>
     isError(exp)  ? exp :
     isNumExp(exp) ? exp.val :

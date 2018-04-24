@@ -17,7 +17,7 @@ const rewriteLet = (e: LetExp): AppExp => {
         makeProcExp(vars, e.body),
         vals);
 }
-
+console.log(JSON.stringify("(let ((x (lambda (x) (+ x 1)))(y ((lambda (y) (- y 22)) 23))(z 6))(* (x z) y))",null,4))
 /*
 Purpose: rewrite all occurrences of let in an expression to lambda-applications.
 Signature: rewriteAllLet(exp)

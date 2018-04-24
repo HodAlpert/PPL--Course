@@ -121,4 +121,3 @@ assert(isAppExp(parseL1("(> x 1)")));
 assert(isAppExp(parseL1("(> (+ x x) (* x x))")));
 assert(isProgram(parseL1("(L1 (define x 1) (> (+ x 1) (* x x)))")));
 // console.log(parseSexp("(L1 (define x 1) (> (+ x 1) (* x x)))"))
-console.log(parseL1("(L1 (define x 1) (> (+ x 1) (* x x)))"))

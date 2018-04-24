@@ -58,4 +58,4 @@ assert.deepEqual(f("(lambda (x) (lambda (y) (+ x y)))"),
 assert.deepEqual(f("((lambda (x) (* x x)) ((lambda (x) (+ x x)) 2))"),
     [["lambda", ["x"], [["*", "free"], ["x", ":", 0, 0], ["x", ":", 0, 0]]],
         [["lambda", ["x"], [["+", "free"], ["x", ":", 0, 0], ["x", ":", 0, 0]]], 2]]);
-// console.log(JSON.stringify(f("((lambda (x) (* x x)) ((lambda (x) (+ x x)) 2))")))
+console.log(JSON.stringify(f("((lambda (x) (* x x)) ((lambda (x) (+ x x)) 2))")))
