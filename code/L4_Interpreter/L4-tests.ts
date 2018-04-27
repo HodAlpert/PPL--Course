@@ -1,16 +1,16 @@
 import * as assert from "assert";
 import { map } from 'ramda';
-import { makeNumExp, makeVarDecl, makeVarRef } from './L3-ast';
-import { isBoolExp, isNumExp, isPrimOp, isStrExp, isVarDecl, isVarRef } from './L3-ast';
-import { makeEmptySExp, makeSymbolSExp } from './L3-value';
+import { makeNumExp, makeVarDecl, makeVarRef } from "../AST_Definitions/L3-ast";
+import { isBoolExp, isNumExp, isPrimOp, isStrExp, isVarDecl, isVarRef } from "../AST_Definitions/L3-ast";
+import { makeEmptySExp, makeSymbolSExp } from '../Syntactic_operations/L3-values';
 import { isAppExp4, isCExp4, isDefineExp4, isIfExp4, isLetrecExp4, isLetExp4, isLitExp4, isProcExp4, isProgram4 } from './L4-ast';
 import { parseL4, parseL4CExp } from './L4-ast';
 import { makeEmptyEnv } from "./L4-env";
 import { evalParse4 } from './L4-eval';
 import { Value4 } from './L4-value';
 import { makeClosure4, makeCompoundSExp4 } from './L4-value';
-import { isError } from './error';
-import { allT, first, second } from './list';
+import { isError } from '../Support_functions/error';
+import { allT, first, second } from '../Support_functions/list';
 
 // ========================================================
 // TESTS Parser

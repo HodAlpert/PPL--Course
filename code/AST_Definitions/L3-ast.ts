@@ -204,7 +204,7 @@ const parseLetExp = (sexps: any[]): LetExp | Error =>
         safeMakeLetExp(parseBindings(sexps[1]),
             map(parseL3CExp, sexps.slice(2)));
 
-const safeMakeLetExp = (bindings: Binding[] | Error, body: Array<CExp | Error>): LetExp | Error =>
+export const safeMakeLetExp = (bindings: Binding[] | Error, body: Array<CExp | Error>): LetExp | Error =>
     isError(bindings) ? bindings :
         hasNoError(body) ? makeLetExp(bindings, body) :
             Error(getErrorMessages(body));

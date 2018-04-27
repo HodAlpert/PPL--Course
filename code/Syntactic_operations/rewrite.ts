@@ -1,8 +1,8 @@
 import { map } from "ramda";
-import { AppExp, CExp, Exp, LetExp, Parsed }  from "../AST_Definitions/L3-ast";
+import { AppExp, CExp, Exp, LetExp, Parsed, parseL3 }  from "../AST_Definitions/L3-ast";
 import { isAppExp, isAtomicExp, isCExp, isDefineExp, isExp, isIfExp, isLetExp, isLitExp,
     isProcExp, isProgram }  from "../AST_Definitions/L3-ast";
-import { makeAppExp, makeDefineExp, makeIfExp, makeProcExp, makeProgram } from "../AST_Definitions/L3-ast";
+import { makeAppExp, makeDefineExp, makeIfExp, makeProcExp, makeProgram,safeMakeLetExp } from "../AST_Definitions/L3-ast";
 import { isError } from "../Support_functions/error";
 
 /*
@@ -17,7 +17,6 @@ const rewriteLet = (e: LetExp): AppExp => {
         makeProcExp(vars, e.body),
         vals);
 }
-console.log(JSON.stringify("(let ((x (lambda (x) (+ x 1)))(y ((lambda (y) (- y 22)) 23))(z 6))(* (x z) y))",null,4))
 /*
 Purpose: rewrite all occurrences of let in an expression to lambda-applications.
 Signature: rewriteAllLet(exp)

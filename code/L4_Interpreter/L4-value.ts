@@ -1,8 +1,8 @@
 // ========================================================
 // Value type definition for L4
 
-import { isPrimOp, PrimOp, VarDecl } from './L3-ast';
-import { isEmptySExp, isSymbolSExp, makeEmptySExp, makeSymbolSExp, EmptySExp, SymbolSExp } from './L3-value';
+import { isPrimOp, PrimOp, VarDecl } from "../AST_Definitions/L3-ast";
+import { isEmptySExp, isSymbolSExp, makeEmptySExp, makeSymbolSExp, EmptySExp, SymbolSExp } from '../Syntactic_operations/L3-values';
 import { CExp4 } from './L4-ast';
 import { Env } from './L4-env';
 

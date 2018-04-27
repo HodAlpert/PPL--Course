@@ -1,20 +1,20 @@
 // L4-eval.ts
 
 import { filter, map, reduce, zip } from "ramda";
-import { isArray, isBoolean, isEmpty, isNumber, isString } from "./L3-ast";
-import { AtomicExp, BoolExp, LitExp, NumExp, PrimOp, StrExp, VarDecl, VarRef } from "./L3-ast";
-import { isBoolExp, isLitExp, isNumExp, isPrimOp, isStrExp, isVarRef } from "./L3-ast";
+import { isArray, isBoolean, isEmpty, isNumber, isString } from "../AST_Definitions/L3-ast";
+import { AtomicExp, BoolExp, LitExp, NumExp, PrimOp, StrExp, VarDecl, VarRef } from "../AST_Definitions/L3-ast";
+import { isBoolExp, isLitExp, isNumExp, isPrimOp, isStrExp, isVarRef } from "../AST_Definitions/L3-ast";
 import { makeAppExp, makeBoolExp, makeIfExp, makeLitExp, makeNumExp, makeProcExp, makeStrExp,
-         makeVarDecl, makeVarRef } from "./L3-ast";
-import { isEmptySExp, isSymbolSExp, makeEmptySExp, makeSymbolSExp } from './L3-value';
+         makeVarDecl, makeVarRef } from "../AST_Definitions/L3-ast";
+import { isEmptySExp, isSymbolSExp, makeEmptySExp, makeSymbolSExp } from '../Syntactic_operations/L3-values';
 import { AppExp4, CompoundExp4, CExp4, DefineExp4, Exp4, IfExp4, LetrecExp4, LetExp4, Parsed4, ProcExp4, Program4 } from './L4-ast';
 import { isAppExp4, isCExp4, isDefineExp4, isExp4, isIfExp4, isLetrecExp4, isLetExp4, isLitExp4, isProcExp4, isProgram4 } from "./L4-ast";
 import { parseL4 } from "./L4-ast";
 import { applyEnv, makeEmptyEnv, makeExtEnv, makeRecEnv, Env } from "./L4-env";
 import { isClosure4, isCompoundSExp4, isSExp4, makeClosure4, makeCompoundSExp4,
          Closure4, CompoundSExp4, SExp4, Value4 } from "./L4-value";
-import { getErrorMessages, hasNoError, isError }  from "./error";
-import { allT, first, rest, second } from './list';
+import { getErrorMessages, hasNoError, isError }  from "../Support_functions/error";
+import { allT, first, rest, second } from '../Support_functions/list';
 
 // ========================================================
 // Eval functions
