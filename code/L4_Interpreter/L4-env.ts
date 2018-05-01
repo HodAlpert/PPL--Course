@@ -14,7 +14,7 @@
 // The key operation on env is apply-env(var) which returns the value associated to var in env
 // or throw an error if var is not defined in env.
 
-import { VarDecl } from './L3-ast';
+import { VarDecl } from '../AST_Definitions/L3-ast';
 import { CExp4 } from './L4-ast';
 import { makeClosure4, Value4 } from './L4-value';
 

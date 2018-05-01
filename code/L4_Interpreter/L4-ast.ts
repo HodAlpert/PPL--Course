@@ -5,15 +5,15 @@
 
 import * as assert from "assert";
 import { all, apply, filter, map, reduce, zipWith } from "ramda";
-import { AtomicExp, VarDecl, VarRef } from './L3-ast';
-import { isAtomicExp } from './L3-ast';
-import { isArray, isEmpty, isNumericString, isSexpString, isString } from './L3-ast';
-import { makeVarDecl, makeVarRef } from './L3-ast';
-import { parseDecls, parseL3Atomic } from './L3-ast';
-import { makeEmptySExp, makeSymbolSExp } from './L3-value';
+import { AtomicExp, VarDecl, VarRef } from '../AST_Definitions/L3-ast';
+import { isAtomicExp } from '../AST_Definitions/L3-ast';
+import { isArray, isEmpty, isNumericString, isSexpString, isString } from '../AST_Definitions/L3-ast';
+import { makeVarDecl, makeVarRef } from '../AST_Definitions/L3-ast';
+import { parseDecls, parseL3Atomic } from '../AST_Definitions/L3-ast';
+import { makeEmptySExp, makeSymbolSExp } from '../interpreter/L3-value';
 import { makeCompoundSExp4, SExp4 } from './L4-value';
-import { getErrorMessages, hasNoError, isError, safeF, safeFL } from './error';
-import { allT, first, rest, second } from './list';
+import { getErrorMessages, hasNoError, isError, safeF, safeFL } from '../support_functions/error';
+import { allT, first, rest, second } from '../support_functions/list';
 
 /*
 ;; =============================================================================
