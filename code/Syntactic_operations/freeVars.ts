@@ -4,7 +4,7 @@ import { Parsed, VarRef } from "../AST_Definitions/L3-ast";
 import { isAppExp, isAtomicExp, isBoolExp, isDefineExp, isIfExp, isLetExp, isLitExp, isNumExp,
     isPrimOp, isProcExp, isProgram, isStrExp, isVarRef } from '../AST_Definitions/L3-ast';
 
-// TODO: No error handling
+// TODO: No error handling  
 export const height = (exp: Parsed | Error): number =>
     isAtomicExp(exp) ? 1 :
         isLitExp(exp) ? 1 :

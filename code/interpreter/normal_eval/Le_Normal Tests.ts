@@ -2,14 +2,14 @@
 // Normal eval tests
 import * as assert from "assert";
 import { map } from 'ramda';
-import { makeNumExp, parseL3 } from './L3-ast';
-import { makePrimOp, makeVarDecl, makeVarRef } from './L3-ast';
+import { makeNumExp, parseL3 } from "../../AST_Definitions/L3-ast";
+import { makePrimOp, makeVarDecl, makeVarRef } from "../../AST_Definitions/L3-ast";
 import { isAppExp, isBoolExp, isDefineExp, isIfExp, isLetExp, isLitExp, isNumExp, isPrimOp,
-         isProcExp, isProgram, isStrExp, isVarDecl, isVarRef } from './L3-ast';
-import { makeEmptyEnv } from './L3-env';
-import { evalNormalParse, L3normalEval } from './L3-normal';
-import { Value } from './L3-value';
-import { isClosure, makeClosure, makeCompoundSExp, makeEmptySExp, makeSymbolSExp } from './L3-value';
+         isProcExp, isProgram, isStrExp, isVarDecl, isVarRef } from "../../AST_Definitions/L3-ast";
+import { makeEmptyEnv } from '../L3-env';
+import { evalNormalParse, L3normalEval } from './L3_Normal Evaluation';
+import { Value } from '../L3-value';
+import { isClosure, makeClosure, makeCompoundSExp, makeEmptySExp, makeSymbolSExp } from '../L3-value';
 
 const ge = makeEmptyEnv();
 assert.equal(evalNormalParse("1"), 1);

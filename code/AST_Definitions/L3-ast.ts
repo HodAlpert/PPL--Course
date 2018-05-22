@@ -266,4 +266,9 @@ export const parseSExp = (x: any): SExp | Error =>
                             isArray(x) ? makeCompoundSExp(map(parseSExp, x)) :
                                 Error(`Bad literal expression: ${x}`);
 
-console.log(JSON.stringify(parseL3("(let* ((x 3) (y x)) x y)"), null, 3));
+
+
+console.log(JSON.stringify(parseL3(`
+(L3 (define loop (lambda (x) (loop x)))
+    ((lambda (f) 1) (loop 0)))`),null,3));
+    
