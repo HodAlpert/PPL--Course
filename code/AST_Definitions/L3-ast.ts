@@ -6,6 +6,7 @@ import { makeCompoundSExp, makeEmptySExp, makeSymbolSExp, SExp } from '../Syntac
 import { getErrorMessages, hasNoError, isError, safeF, safeFL } from '../Support_functions/error';
 import { allT, first, rest, second } from "../Support_functions/list";
 
+
 /*
 ;; =============================================================================
 ;; Scheme Parser
@@ -25,6 +26,7 @@ import { allT, first, rest, second } from "../Support_functions/list";
 ;; <cexp> ::= <number>                      / NumExp(val:number)
 ;;         |  <boolean>                     / BoolExp(val:boolean)
 ;;         |  <string>                      / StrExp(val:string)
+;;         |  <varRef>                      / VarRef(var:string)
 ;;         |  ( lambda ( <var>* ) <cexp>+ ) / ProcExp(params:VarDecl[], body:CExp[]))
 ;;         |  ( if <cexp> <cexp> <cexp> )   / IfExp(test: CExp, then: CExp, alt: CExp)
 ;;         |  ( let ( binding* ) <cexp>+ )  / LetExp(bindings:Binding[], body:CExp[]))
@@ -148,41 +150,41 @@ export const parseL3 = (x: string): Parsed | Error =>
 
 export const parseL3Sexp = (sexp: any): Parsed | Error =>
     isEmpty(sexp) ? Error("Parse: Unexpected empty") :
-        isArray(sexp) ? parseL3Compound(sexp) :
-            isString(sexp) ? parseL3Atomic(sexp) :
-                isSexpString(sexp) ? parseL3Atomic(sexp) :
-                    Error(`Parse: Unexpected type ${sexp}`);
+    isArray(sexp) ? parseL3Compound(sexp) :
+    isString(sexp) ? parseL3Atomic(sexp) :
+    isSexpString(sexp) ? parseL3Atomic(sexp) :
+    Error(`Parse: Unexpected type ${sexp}`);
 
 const parseL3Compound = (sexps: any[]): Parsed | Error =>
     isEmpty(sexps) ? Error("Unexpected empty sexp") :
-        (first(sexps) === "L3") ? parseProgram(map(parseL3Sexp, rest(sexps))) :
-            (first(sexps) === "define") ? parseDefine(rest(sexps)) :
-                parseL3CExp(sexps);
+    (first(sexps) === "L3") ? parseProgram(map(parseL3Sexp, rest(sexps))) :
+    (first(sexps) === "define") ? parseDefine(rest(sexps)) :
+    parseL3CExp(sexps);
 
 const parseProgram = (es: Array<Parsed | Error>): Program | Error =>
     isEmpty(es) ? Error("Empty program") :
-        allT(isExp, es) ? makeProgram(es) :
-            hasNoError(es) ? Error(`Program cannot be embedded in another program - ${es}`) :
-                Error(getErrorMessages(es));
+    allT(isExp, es) ? makeProgram(es) :
+    hasNoError(es) ? Error(`Program cannot be embedded in another program - ${es}`) :
+    Error(getErrorMessages(es));
 
 const parseDefine = (es: any[]): DefineExp | Error =>
     (es.length !== 2) ? Error(`define should be (define var val) - ${es}`) :
-        !isString(es[0]) ? Error(`Expected (define <var> <CExp>) - ${es[0]}`) :
-            safeF((val: CExp) => makeDefineExp(makeVarDecl(es[0]), val))(parseL3CExp(es[1]));
+    !isString(es[0]) ? Error(`Expected (define <var> <CExp>) - ${es[0]}`) :
+    safeF((val: CExp) => makeDefineExp(makeVarDecl(es[0]), val))(parseL3CExp(es[1]));
 
 export const parseL3CExp = (sexp: any): CExp | Error =>
     isArray(sexp) ? parseL3CompoundCExp(sexp) :
-        isString(sexp) ? parseL3Atomic(sexp) :
-            isSexpString(sexp) ? parseL3Atomic(sexp) :
-                Error("Unexpected type" + sexp);
+    isString(sexp) ? parseL3Atomic(sexp) :
+    isSexpString(sexp) ? parseL3Atomic(sexp) :
+    Error("Unexpected type" + sexp);
 
 const parseL3CompoundCExp = (sexps: any[]): CExp | Error =>
     isEmpty(sexps) ? Error("Unexpected empty") :
-        first(sexps) === "if" ? parseIfExp(sexps) :
-            first(sexps) === "lambda" ? parseProcExp(sexps) :
-                first(sexps) === "let" ? parseLetExp(sexps) :
-                    first(sexps) === "quote" ? parseLitExp(sexps) :
-                        parseAppExp(sexps)
+    first(sexps) === "if" ? parseIfExp(sexps) :
+    first(sexps) === "lambda" ? parseProcExp(sexps) :
+    first(sexps) === "let" ? parseLetExp(sexps) :
+    first(sexps) === "quote" ? parseLitExp(sexps) :
+    parseAppExp(sexps)
 
 const parseAppExp = (sexps: any[]): AppExp | Error =>
     safeFL((cexps: CExp[]) => makeAppExp(first(cexps), rest(cexps)))(map(parseL3CExp, sexps));
@@ -192,39 +194,39 @@ const parseIfExp = (sexps: any[]): IfExp | Error =>
 
 const parseProcExp = (sexps: any[]): ProcExp | Error =>
     safeFL((body: CExp[]) => makeProcExp( map(makeVarDecl, sexps[1]), body))
-    (map(parseL3CExp, rest(rest(sexps))));
+        (map(parseL3CExp, rest(rest(sexps))));
 
 export const parseDecls = (sexps: any[]): VarDecl[] | Error =>
     allT(isString, sexps) ? map(makeVarDecl, sexps) :
-        Error(`VarDecl must be a string - ${sexps}`);
+    Error(`VarDecl must be a string - ${sexps}`);
 
 // LetExp ::= (let (<binding>*) <cexp>+)
 const parseLetExp = (sexps: any[]): LetExp | Error =>
     sexps.length < 3 ? Error(`Expected (let (<binding>*) <cexp>+) - ${sexps}`) :
-        safeMakeLetExp(parseBindings(sexps[1]),
-            map(parseL3CExp, sexps.slice(2)));
+    safeMakeLetExp(parseBindings(sexps[1]),
+                   map(parseL3CExp, sexps.slice(2)));
 
-export const safeMakeLetExp = (bindings: Binding[] | Error, body: Array<CExp | Error>): LetExp | Error =>
+const safeMakeLetExp = (bindings: Binding[] | Error, body: Array<CExp | Error>): LetExp | Error =>
     isError(bindings) ? bindings :
-        hasNoError(body) ? makeLetExp(bindings, body) :
-            Error(getErrorMessages(body));
+    hasNoError(body) ? makeLetExp(bindings, body) :
+    Error(getErrorMessages(body));
 
 const parseBindings = (pairs: any[]): Binding[] | Error =>
     safeMakeBindings(parseDecls(map(first, pairs)),
-        map(parseL3CExp, map(second, pairs)));
+                     map(parseL3CExp, map(second, pairs)));
 
 const safeMakeBindings = (decls: VarDecl[] | Error, vals: Array<CExp | Error>): Binding[] | Error =>
     isError(decls) ? decls :
-        hasNoError(vals) ? zipWith(makeBinding, decls, vals) :
-            Error(getErrorMessages(vals));
+    hasNoError(vals) ? zipWith(makeBinding, decls, vals) :
+    Error(getErrorMessages(vals));
 
 export const parseL3Atomic = (sexp: string): AtomicExp =>
     sexp === "#t" ? makeBoolExp(true) :
-        sexp === "#f" ? makeBoolExp(false) :
-            isNumericString(sexp) ? makeNumExp(+sexp) :
-                isSexpString(sexp) ? makeStrExp(sexp.toString()) :
-                    isPrimitiveOp(sexp) ? makePrimOp(sexp) :
-                        makeVarRef(sexp);
+    sexp === "#f" ? makeBoolExp(false) :
+    isNumericString(sexp) ? makeNumExp(+sexp) :
+    isSexpString(sexp) ? makeStrExp(sexp.toString()) :
+    isPrimitiveOp(sexp) ? makePrimOp(sexp) :
+    makeVarRef(sexp);
 
 /*
     ;; <prim-op>  ::= + | - | * | / | < | > | = | not |  eq? | string=?
@@ -258,17 +260,10 @@ export const parseLitExp = (sexps: any[]): LitExp | Error =>
 // x is the output of p (sexp parser)
 export const parseSExp = (x: any): SExp | Error =>
     x === "#t" ? true :
-        x === "#f" ? false :
-            isNumericString(x) ? +x :
-                isSexpString(x) ? x.toString() :
-                    isString(x) ? makeSymbolSExp(x) :
-                        x.length === 0 ? makeEmptySExp() :
-                            isArray(x) ? makeCompoundSExp(map(parseSExp, x)) :
-                                Error(`Bad literal expression: ${x}`);
-
-
-
-console.log(JSON.stringify(parseL3(`
-(L3 (define loop (lambda (x) (loop x)))
-    ((lambda (f) 1) (loop 0)))`),null,3));
-    
+    x === "#f" ? false :
+    isNumericString(x) ? +x :
+    isSexpString(x) ? x.toString() :
+    isString(x) ? makeSymbolSExp(x) :
+    x.length === 0 ? makeEmptySExp() :
+    isArray(x) ? makeCompoundSExp(map(parseSExp, x)) :
+    Error(`Bad literal expression: ${x}`);

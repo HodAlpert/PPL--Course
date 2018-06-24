@@ -2,12 +2,12 @@
 // L4 with mutation (set!) and env-box model
 
 import { filter, map, reduce, repeat, zip, zipWith } from "ramda";
-import { isArray, isBoolean, isEmpty, isNumber, isString } from "./L3-ast";
-import { AtomicExp, BoolExp, LitExp, NumExp, PrimOp, StrExp, VarDecl, VarRef } from "./L3-ast";
-import { isBoolExp, isLitExp, isNumExp, isPrimOp, isStrExp, isVarRef } from "./L3-ast";
+import { isArray, isBoolean, isEmpty, isNumber, isString } from '../AST_Definitions/L3-ast';
+import { AtomicExp, BoolExp, LitExp, NumExp, PrimOp, StrExp, VarDecl, VarRef } from '../AST_Definitions/L3-ast';
+import { isBoolExp, isLitExp, isNumExp, isPrimOp, isStrExp, isVarRef } from '../AST_Definitions/L3-ast';
 import { makeAppExp, makeBoolExp, makeIfExp, makeLitExp, makeNumExp, makeProcExp, makeStrExp,
-         makeVarDecl, makeVarRef } from "./L3-ast";
-import { isEmptySExp, isSymbolSExp, makeEmptySExp, makeSymbolSExp } from './L3-value';
+         makeVarDecl, makeVarRef } from '../AST_Definitions/L3-ast';
+import { isEmptySExp, isSymbolSExp, makeEmptySExp, makeSymbolSExp } from '../interpreter/L3-value';
 import { AppExp4, CompoundExp4, CExp4, DefineExp4, Exp4, IfExp4, LetrecExp4, LetExp4,
          Parsed4, ProcExp4, Program4, SetExp4 } from './L4-ast-box';
 import { isAppExp4, isCExp4, isDefineExp4, isExp4, isIfExp4, isLetrecExp4, isLetExp4,
@@ -17,8 +17,8 @@ import { applyEnv, applyEnvBdg, globalEnvAddBinding, makeExtEnv, setFBinding,
          theGlobalEnv, Env } from "./L4-env-box";
 import { isClosure4, isCompoundSExp4, isSExp4, makeClosure4, makeCompoundSExp4,
          Closure4, CompoundSExp4, SExp4, Value4 } from "./L4-value-box";
-import { getErrorMessages, hasNoError, isError }  from "./error";
-import { allT, first, rest, second } from './list';
+import { getErrorMessages, hasNoError, isError }  from "../Support_functions/error";
+import { allT, first, rest, second } from '../Support_functions/list';
 
 // ========================================================
 // Eval functions

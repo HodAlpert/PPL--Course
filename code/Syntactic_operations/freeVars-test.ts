@@ -1,6 +1,7 @@
-import * as assert from "C:/תיקייה ראשית/סמסטר ג'/SPL/serverProject/spl-net/PPL_Course/node_modules/assert/assert.js";
+import * as assert from "assert";
 import { makeVarRef, parseL3 } from '../AST_Definitions/L3-ast';
 import { height, occursFree, referencedVars } from './freeVars';
+
 
 assert.deepEqual(height(parseL3("x")), 1);
 assert.deepEqual(height(parseL3("(lambda (x) (* x x))")), 2);
@@ -38,9 +39,8 @@ assert.equal(occursFree("x", parseL3("(let ((y x) (x 2)) x)")), true);
 assert.equal(occursFree("x", parseL3("(let ((y x) (x 2)) z)")), true);
 */
 
-assert.deepEqual(referencedVars(parseL3("(lambda (y) (lambda (z) x))")),[makeVarRef("x")]);
+assert.deepEqual(referencedVars(parseL3("(lambda (y) (lambda (z) x))")), [makeVarRef("x")]);
 assert.deepEqual(referencedVars(parseL3("(+ x y)")), [makeVarRef("x"), makeVarRef("y")]);
 assert.deepEqual(referencedVars(parseL3("(if x 1 2)")), [makeVarRef("x")]);
 assert.deepEqual(referencedVars(parseL3("(plus x 1)")), [makeVarRef("plus"), makeVarRef("x")]);
 
-console.log(referencedVars(parseL3("(lambda (y) (lambda (z) x))")))

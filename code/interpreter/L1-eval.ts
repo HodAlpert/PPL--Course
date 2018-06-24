@@ -106,4 +106,3 @@ const e1 = parseL1("(+ x 2)");
 if (isCExp(e1) && isEnv(env1)) {
     assert.equal(evalExps([e1], env1), 3);
 }
-

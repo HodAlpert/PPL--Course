@@ -16,8 +16,8 @@ import { applyEnv, applyEnvBdg, globalEnvAddBinding, makeExtEnv, setFBinding,
 import { isEmptySExp, isSymbolSExp, makeEmptySExp, makeSymbolSExp } from './L5-value';
 import { isClosure, isCompoundSExp, isSExp, makeClosure, makeCompoundSExp,
          Closure, CompoundSExp, SExp, Value } from "./L5-value";
-import { getErrorMessages, hasNoError, isError }  from "./error";
-import { allT, first, rest, second } from './list';
+import { getErrorMessages, hasNoError, isError }  from "../Support_functions/error";
+import { allT, first, rest, second } from '../Support_functions/list';
 
 // ========================================================
 // Eval functions

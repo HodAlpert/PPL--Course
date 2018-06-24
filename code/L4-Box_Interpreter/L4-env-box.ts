@@ -31,10 +31,10 @@
 // or returns an error if var is not defined in env.
 
 import { map, zipWith } from "ramda";
-import { VarDecl } from './L3-ast';
-import { CExp4 } from './L4-ast';
+import { VarDecl } from '../AST_Definitions/L3-ast';
+import { CExp4 } from '../L4_interpreter/L4-ast';
 import { makeClosure4, Value4 } from './L4-value-box';
-import { isError } from "./error";
+import { isError } from "../Support_functions/error";
 
 // ========================================================
 // Box datatype

@@ -32,9 +32,9 @@
 import { chain, concat, filter, map, uniq } from "ramda";
 import p = require("s-expression");
 import { isArray, isBoolean, isEmpty, isString } from './L5-ast';
-import { makeBox, setBox, unbox, Box } from './box';
-import { getErrorMessages, hasNoError, isError, safeF, safeFL } from './error';
-import { first, rest } from './list';
+import { makeBox, setBox, unbox, Box } from '../Support_functions/box';
+import { getErrorMessages, hasNoError, isError, safeF, safeFL } from '../Support_functions/error';
+import { first, rest } from '../Support_functions/list';
 
 export type TExp =  AtomicTExp | CompoundTExp | TVar;
 export const isTExp = (x: any): x is TExp => isAtomicTExp(x) || isCompoundTExp(x) || isTVar(x);

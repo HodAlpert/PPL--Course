@@ -205,4 +205,3 @@ assert.deepEqual(evalParse4(`
 (L4 (define compose (lambda (f g) (lambda (x) (f (g x)))))
     ((compose not number?) 2))`),
     false);
-

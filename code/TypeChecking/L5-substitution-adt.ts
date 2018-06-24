@@ -1,8 +1,8 @@
 import { curry, map, prop, zipWith } from 'ramda';
 import { isEmpty } from "./L5-ast";
 import { eqTVar, isAtomicTExp, isProcTExp, isTVar, makeProcTExp, unparseTExp, TExp, TVar } from "./TExp";
-import { getErrorMessages, hasNoError, isError } from "./error";
-import { first, rest } from "./list";
+import { getErrorMessages, hasNoError, isError } from "../Support_functions/error";
+import { first, rest } from "../Support_functions/list";
 
 // Implementation of the Substitution ADT
 // ========================================================

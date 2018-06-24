@@ -119,6 +119,7 @@ assert.deepEqual(evalParse('(if (not (string? "a")) 1 2)'), 2);
 // Test proc
 assert.deepEqual(evalParse("(lambda (x) x)"), makeClosure([makeVarDecl("x")], [makeVarRef("x")]));
 
+
 // Test substitute
 const es1 = map(parseL3, ["((lambda (x) (* x x)) x)"]);
 if (allT(isCExp, es1))
@@ -251,5 +252,3 @@ assert.deepEqual(evalParse(`
 (L3 (define compose (lambda (f g) (lambda (x) (f (g x)))))
     ((compose not number?) 2))`),
     false);
-
-evalParse("(define x 12)((lambda (x) (+ x (+ (/ x 2) x))) x)")

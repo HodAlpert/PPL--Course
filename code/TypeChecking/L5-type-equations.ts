@@ -4,8 +4,9 @@ import * as A from "./L5-ast";
 import * as S from "./L5-substitution-adt";
 import * as TC from "./L5-typecheck";
 import * as T from "./TExp";
-import { isError, safeF, trust } from './error';
-import {first, rest} from "./list";
+import { isError, safeF, trust } from '../Support_functions/error';
+import {first, rest} from "../Support_functions/list";
+import { makeBoolTExp, makeNumTExp, makeProcTExp, makeTVar, makeVoidTExp, parseTE, unparseTExp } from './TExp';
 
 // ============================================================n
 // Pool ADT

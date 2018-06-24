@@ -4,7 +4,7 @@ import * as A from "./L5-ast";
 import * as S from "./L5-substitution-adt";
 import * as E from "./L5-type-equations";
 import * as T from "./TExp";
-import { isError } from "./error";
+import { isError } from "../Support_functions/error";
 
 // Setup
 export const verifyTeOfExpr = (exp: string, texp: string): boolean => {

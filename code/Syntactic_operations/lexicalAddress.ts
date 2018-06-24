@@ -107,23 +107,23 @@ export const parseLA = (x: string): CExpLA | Error =>
 
 export const parseLASExp = (sexp: any): CExpLA | Error =>
     isEmpty(sexp) ? Error("Parse: Unexpected empty") :
-        isArray(sexp) ? parseLACompound(sexp) :
-            isString(sexp) ? parseLAAtomic(sexp) :
-                isSexpString(sexp) ? parseLAAtomic(sexp) :
-                    Error(`Parse: Unexpected type ${sexp}`);
+    isArray(sexp) ? parseLACompound(sexp) :
+    isString(sexp) ? parseLAAtomic(sexp) :
+    isSexpString(sexp) ? parseLAAtomic(sexp) :
+    Error(`Parse: Unexpected type ${sexp}`);
 
 const parseLAAtomic = (sexp: string): CExpLA =>
     sexp === "#t" ? makeBoolExp(true) :
-        sexp === "#f" ? makeBoolExp(false) :
-            isNumericString(sexp) ? makeNumExp(+sexp) :
-                isSexpString(sexp) ? makeStrExp(sexp.toString()) :
-                    makeVarRef(sexp);
+    sexp === "#f" ? makeBoolExp(false) :
+    isNumericString(sexp) ? makeNumExp(+sexp) :
+    isSexpString(sexp) ? makeStrExp(sexp.toString()) :
+    makeVarRef(sexp);
 
 const parseLACompound = (sexps: any[]): CExpLA | Error =>
     first(sexps) === "if" ? parseIfExpLA(sexps) :
-        first(sexps) === "lambda" ? parseProcExpLA(sexps) :
-            first(sexps) === "quote" ? parseLitExp(sexps) :
-                parseAppExpLA(sexps);
+    first(sexps) === "lambda" ? parseProcExpLA(sexps) :
+    first(sexps) === "quote" ? parseLitExp(sexps) :
+    parseAppExpLA(sexps);
 
 const parseAppExpLA = (sexps: any[]): AppExpLA | Error =>
     safeFL((cexps: CExpLA[]) => makeAppExpLA(first(cexps), rest(cexps)))(map(parseLASExp, sexps));
@@ -133,7 +133,7 @@ const parseIfExpLA = (sexps: any[]): IfExpLA | Error =>
 
 const parseProcExpLA = (sexps: any[]): ProcExpLA | Error =>
     safeFL((body: CExpLA[]) => makeProcExpLA( map(makeVarDecl, sexps[1]), body))
-    (map(parseLASExp, rest(rest(sexps))));
+        (map(parseLASExp, rest(rest(sexps))));
 
 // ========================================================
 // Unparse
@@ -144,30 +144,30 @@ import { isCompoundSExp, isEmptySExp, isSymbolSExp } from '../Syntactic_operatio
 // Purpose: Map a Lexical Address AST to a concrete syntax sexp.
 const unparseSExp = (se: SExp): any =>
     isSymbolSExp(se) ? se.val :
-        isEmptySExp(se) ? [] :
-            isCompoundSExp(se) ? map(unparseSExp, se.val) :
-                se;
+    isEmptySExp(se) ? [] :
+    isCompoundSExp(se) ? map(unparseSExp, se.val) :
+    se;
 
 
 const unparseLitExp = (le: LitExp): any =>
     isEmptySExp(le.val) ? ["quote", unparseSExp(le.val)] :
-        isSymbolSExp(le.val) ? ["quote", unparseSExp(le.val)] :
-            isCompoundSExp(le.val) ? ["quote", unparseSExp(le.val)] :
-                le.val;
+    isSymbolSExp(le.val) ? ["quote", unparseSExp(le.val)] :
+    isCompoundSExp(le.val) ? ["quote", unparseSExp(le.val)] :
+    le.val;
 
 export const unparseLA = (exp: CExpLA | Error): any =>
     isError(exp) ? exp :
-        isBoolExp(exp) ? exp.val :
-            isNumExp(exp) ? exp.val :
-                isStrExp(exp) ? exp.val :
-                    isLitExp(exp) ? unparseLitExp(exp) :
-                        isVarRef(exp) ? exp.var :
-                            isProcExpLA(exp) ? ["lambda", map((p) => p.var, exp.params)].concat(map(unparseLA, exp.body)) :
-                                isIfExpLA(exp) ? ["if", unparseLA(exp.test), unparseLA(exp.then), unparseLA(exp.alt)] :
-                                    isAppExpLA(exp) ? [unparseLA(exp.rator)].concat(map(unparseLA, exp.rands)) :
-                                        isFreeVar(exp) ? [exp.var, "free"] :
-                                            isLexicalAddress(exp) ? [exp.var, ":", exp.depth, exp.pos] :
-                                                exp;
+    isBoolExp(exp) ? exp.val :
+    isNumExp(exp) ? exp.val :
+    isStrExp(exp) ? exp.val :
+    isLitExp(exp) ? unparseLitExp(exp) :
+    isVarRef(exp) ? exp.var :
+    isProcExpLA(exp) ? ["lambda", map((p) => p.var, exp.params)].concat(map(unparseLA, exp.body)) :
+    isIfExpLA(exp) ? ["if", unparseLA(exp.test), unparseLA(exp.then), unparseLA(exp.alt)] :
+    isAppExpLA(exp) ? [unparseLA(exp.rator)].concat(map(unparseLA, exp.rands)) :
+    isFreeVar(exp) ? [exp.var, "free"] :
+    isLexicalAddress(exp) ? [exp.var, ":", exp.depth, exp.pos] :
+    exp;
 
 /*
 Annotate an exp AST so that all variable references are marked with their lexical address.
@@ -208,8 +208,8 @@ getLexicalAddress((var-ref a), [[lex-addr a 0 0], [lex-addr b 0 1], [lex-add a 1
 export const getLexicalAddress = (v: VarRef, lexAddresses: LexAddress[]): LexAddress => {
     const loop = (addresses: LexAddress[]): LexAddress =>
         isEmpty(addresses) ? makeFreeVar(v.var) :
-            v.var === first(addresses).var ? first(addresses) :
-                loop(rest(addresses));
+        v.var === first(addresses).var ? first(addresses) :
+        loop(rest(addresses));
     return loop(lexAddresses);
 }
 
@@ -224,8 +224,8 @@ indexOfVar((VarDecl c), [[VarDecl a], [VarDecl b]]) => -1
 export const indexOfVar = (v: VarDecl, decls: VarDecl[]): number => {
     const loop = (decls: VarDecl[], index: number): number =>
         isEmpty(decls) ? -1 :
-            first(decls).var === v.var ? index :
-                loop(rest(decls), index + 1);
+        first(decls).var === v.var ? index :
+        loop(rest(decls), index + 1);
     return loop(decls, 0);
 }
 
@@ -279,21 +279,21 @@ export const addLexicalAddresses = (exp: CExpLA | Error): CExpLA | Error => {
     };
     const visit = (exp: CExpLA | Error, addresses: LexAddress[]): CExpLA | Error =>
         isBoolExp(exp) ? exp :
-            isNumExp(exp) ? exp :
-                isStrExp(exp) ? exp :
-                    isVarRef(exp) ? getLexicalAddress(exp, addresses) :
-                        isFreeVar(exp) ? Error("unexpected LA ${exp}") :
-                            isLexicalAddress(exp) ? Error("unexpected LA ${exp}") :
-                                isLitExp(exp) ? exp :
-                                    isIfExpLA(exp) ? safeFL((tta: CExpLA[]) =>
-                                            makeIfExpLA(tta[0], tta[1], tta[2]))([
-                                            visit(exp.test, addresses),
-                                            visit(exp.then, addresses),
-                                            visit(exp.alt, addresses)]) :
-                                        isProcExpLA(exp) ? visitProc(exp, addresses) :
-                                            isAppExpLA(exp) ? safeFL((app: CExpLA[]) => makeAppExpLA(first(app), rest(app)))
-                                                ([visit(exp.rator, addresses)].concat(
-                                                    map((r) => visit(r, addresses), exp.rands))) :
-                                                exp;
+        isNumExp(exp) ? exp :
+        isStrExp(exp) ? exp :
+        isVarRef(exp) ? getLexicalAddress(exp, addresses) :
+        isFreeVar(exp) ? Error("unexpected LA ${exp}") :
+        isLexicalAddress(exp) ? Error("unexpected LA ${exp}") :
+        isLitExp(exp) ? exp :
+        isIfExpLA(exp) ? safeFL((tta: CExpLA[]) =>
+                                makeIfExpLA(tta[0], tta[1], tta[2]))([
+                                    visit(exp.test, addresses),
+                                    visit(exp.then, addresses),
+                                    visit(exp.alt, addresses)]) :
+        isProcExpLA(exp) ? visitProc(exp, addresses) :
+        isAppExpLA(exp) ? safeFL((app: CExpLA[]) => makeAppExpLA(first(app), rest(app)))
+                            ([visit(exp.rator, addresses)].concat(
+                                map((r) => visit(r, addresses), exp.rands))) :
+        exp;
     return isError(exp) ? exp : visit(exp, []);
 };

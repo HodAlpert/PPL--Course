@@ -3,8 +3,8 @@
 import * as assert from "assert";
 import { filter, map } from "ramda";
 
-export type Exp = DefineExp | CExp| Program;
-export type CExp = NumExp | BoolExp | PrimOp | VarRef | VarDecl | AppExp | Error;
+export type Exp = DefineExp | CExp;
+export type CExp = NumExp | BoolExp | PrimOp | VarRef | AppExp | Error;
 
 export interface Program {tag: "Program"; exps: Exp[]; };
 
@@ -43,7 +43,7 @@ export const hasError = (x: any[]): boolean => filter(isError, x).length > 0;
 // Type predicates for type unions
 export const isExp = (x: any): x is Exp => isDefineExp(x) || isCExp(x);
 export const isCExp = (x: any): x is CExp => isNumExp(x) || isBoolExp(x) || isPrimOp(x) ||
-    isVarRef(x) || isVarDecl(x) || isAppExp(x) || isError(x);
+    isVarRef(x) || isAppExp(x) || isError(x);
 
 
 // ========================================================
@@ -68,25 +68,25 @@ export const parseL1 = (x: string): Program | DefineExp | CExp | Error =>
 
 export const parseL1Sexp = (sexp: any): Program | DefineExp | CExp | Error =>
     isEmpty(sexp) ? Error("Unexpected empty") :
-        isArray(sexp) ? parseL1Compound(sexp) :
-            isString(sexp) ? parseL1Atomic(sexp) :
-                Error("Unexpected type" + sexp);
+    isArray(sexp) ? parseL1Compound(sexp) :
+    isString(sexp) ? parseL1Atomic(sexp) :
+    Error("Unexpected type" + sexp);
 
 // There are type errors which we will address in L3 with more precise
 // type definitions for the AST.
 const parseL1Compound = (sexps: any[]): Program | DefineExp | CExp | Error =>
     // @ts-ignore: type error
     first(sexps) === "L1" ? makeProgram(map(parseL1Sexp, rest(sexps))) :
-        first(sexps) === "define" ? makeDefineExp(makeVarDecl(sexps[1]),
-            parseL1CExp(sexps[2])) :
-            parseL1CExp(sexps);
+    first(sexps) === "define" ? makeDefineExp(makeVarDecl(sexps[1]),
+                                              parseL1CExp(sexps[2])) :
+    parseL1CExp(sexps);
 
 const parseL1Atomic = (sexp: string): CExp =>
     sexp === "#t" ? makeBoolExp(true) :
-        sexp === "#f" ? makeBoolExp(false) :
-            isNumericString(sexp) ? makeNumExp(+sexp) :
-                isPrimitiveOp(sexp) ? makePrimOp(sexp) :
-                    makeVarRef(sexp);
+    sexp === "#f" ? makeBoolExp(false) :
+    isNumericString(sexp) ? makeNumExp(+sexp) :
+    isPrimitiveOp(sexp) ? makePrimOp(sexp) :
+    makeVarRef(sexp);
 
 const isPrimitiveOp = (x: string): boolean =>
     x === "+" ||
@@ -100,9 +100,9 @@ const isPrimitiveOp = (x: string): boolean =>
 
 const parseL1CExp = (sexp: any): CExp | Error =>
     isArray(sexp) ? makeAppExp(parseL1CExp(first(sexp)),
-        map(parseL1CExp, rest(sexp))) :
-        isString(sexp) ? parseL1Atomic(sexp) :
-            Error("Unexpected type" + sexp);
+                               map(parseL1CExp, rest(sexp))) :
+    isString(sexp) ? parseL1Atomic(sexp) :
+    Error("Unexpected type" + sexp);
 
 // ========================================================
 // Tests
@@ -120,4 +120,3 @@ assert(isDefineExp(parseL1("(define x 1)")));
 assert(isAppExp(parseL1("(> x 1)")));
 assert(isAppExp(parseL1("(> (+ x x) (* x x))")));
 assert(isProgram(parseL1("(L1 (define x 1) (> (+ x 1) (* x x)))")));
-// console.log(parseSexp("(L1 (define x 1) (> (+ x 1) (* x x)))"))

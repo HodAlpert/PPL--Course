@@ -21,4 +21,3 @@ export const applyEnv = (env: Env, v: string): Value | Error =>
     isEmptyEnv(env) ? Error("var not found " + v) :
     env.var === v ? env.val :
     applyEnv(env.nextEnv, v);
-

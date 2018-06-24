@@ -24,5 +24,5 @@ export const safeF: <T1, T2>(f: (x: T1) => T2) => (x: T1 | Error) => T2 | Error 
 // this is a syntactic restriction of TypeScript.
 export const safeFL: <T1, T2>(f: (xs: T1[]) => T2) => (xs: Array<T1 | Error>) => T2 | Error =
     <T1, T2>(f: (xs: T1[]) => T2) =>
-        (xs: Array<T1 | Error>): T2 | Error =>
-            hasNoError(xs) ? f(xs) : Error(getErrorMessages(xs));
+    (xs: Array<T1 | Error>): T2 | Error =>
+        hasNoError(xs) ? f(xs) : Error(getErrorMessages(xs));

@@ -11,8 +11,8 @@ import { applyTEnv, makeEmptyTEnv, makeExtendTEnv, TEnv } from "./TEnv";
 import { isProcTExp, makeBoolTExp, makeNumTExp, makeProcTExp, makeStrTExp, makeVoidTExp,
          parseTE, unparseTExp,
          BoolTExp, NumTExp, ProcTExp, StrTExp, TExp } from "./TExp";
-import { getErrorMessages, hasNoError, isError } from './error';
-import { allT, first, rest, second } from './list';
+import { getErrorMessages, hasNoError, isError } from '../Support_functions/error';
+import { allT, first, rest, second } from '../Support_functions/list';
 
 // Purpose: Check that type expressions are equivalent
 // as part of a fully-annotated type check process of exp.
@@ -215,4 +215,3 @@ export const typeofDefine = (exp: DefineExp, tenv: TEnv): TExp | Error => {
 export const typeofProgram = (exp: Program, tenv: TEnv): TExp | Error => {
     return Error("TODO");
 };
-

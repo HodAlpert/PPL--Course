@@ -5,8 +5,8 @@ import * as A from "./L5-ast";
 import * as TC from "./L5-typecheck";
 import * as E from "./TEnv";
 import * as T from "./TExp";
-import { getErrorMessages, hasNoError, isError } from "./error";
-import { allT, first, rest, second } from "./list";
+import { getErrorMessages, hasNoError, isError } from "../Support_functions/error";
+import { allT, first, rest, second } from "../Support_functions/list";
 
 // Purpose: Make type expressions equivalent by deriving a unifier
 // Return an error if the types are not unifiable.
@@ -234,4 +234,3 @@ export const typeofDefine = (exp: A.DefineExp, tenv: E.TEnv): T.TExp | Error => 
 export const typeofProgram = (exp: A.Program, tenv: E.TEnv): T.TExp | Error => {
     return Error("TODO");
 };
-

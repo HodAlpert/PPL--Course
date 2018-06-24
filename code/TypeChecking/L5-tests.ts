@@ -9,8 +9,8 @@ import { applyEnv, globalEnvAddBinding, theGlobalEnv } from "./L5-env";
 import { evalParse } from './L5-eval';
 import { makeEmptySExp, makeSymbolSExp } from './L5-value';
 import { isClosure, makeClosure, makeCompoundSExp, Value } from './L5-value';
-import { isError } from './error';
-import { allT, first, second } from './list';
+import { isError } from '../Support_functions/error';
+import { allT, first, second } from '../Support_functions/list';
 
 // ========================================================
 // TESTS Parser

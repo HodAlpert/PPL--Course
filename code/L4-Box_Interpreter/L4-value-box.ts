@@ -4,8 +4,8 @@
 // 1. refer to L4-env-box in Closure4
 // 2. introduce void value type
 
-import { isPrimOp, PrimOp, VarDecl } from './L3-ast';
-import { isEmptySExp, isSymbolSExp, makeEmptySExp, makeSymbolSExp, EmptySExp, SymbolSExp } from './L3-value';
+import { isPrimOp, PrimOp, VarDecl } from '../AST_Definitions/L3-ast';
+import { isEmptySExp, isSymbolSExp, makeEmptySExp, makeSymbolSExp, EmptySExp, SymbolSExp } from '../interpreter/L3-value';
 import { CExp4 } from './L4-ast-box';
 import { Env } from './L4-env-box';
 

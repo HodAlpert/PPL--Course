@@ -1,16 +1,17 @@
 import * as assert from "assert";
 import { map } from 'ramda';
-import { makeNumExp, makeVarDecl, makeVarRef } from './L3-ast';
-import { isBoolExp, isNumExp, isPrimOp, isStrExp, isVarDecl, isVarRef } from './L3-ast';
-import { makeEmptySExp, makeSymbolSExp } from './L3-value';
-import { isAppExp4, isCExp4, isDefineExp4, isIfExp4, isLetrecExp4, isLetExp4, isLitExp4, isProcExp4, isProgram4 } from './L4-ast';
-import { parseL4, parseL4CExp } from './L4-ast';
-import { makeEmptyEnv } from "./L4-env";
-import { evalParse4 } from './L4-eval';
-import { Value4 } from './L4-value';
-import { makeClosure4, makeCompoundSExp4 } from './L4-value';
-import { isError } from './error';
-import { allT, first, second } from './list';
+import { makeNumExp, makeVarDecl, makeVarRef } from '../AST_Definitions/L3-ast';
+import { isBoolExp, isNumExp, isPrimOp, isStrExp, isVarDecl, isVarRef } from '../AST_Definitions/L3-ast';
+import { makeEmptySExp, makeSymbolSExp } from '../interpreter/L3-value';
+import { isAppExp4, isCExp4, isDefineExp4, isIfExp4, isLetrecExp4, isLetExp4,
+         isLitExp4, isProcExp4, isProgram4 } from './L4-ast-box';
+import { parseL4, parseL4CExp } from './L4-ast-box';
+import { applyEnv, globalEnvAddBinding, theGlobalEnv } from "./L4-env-box";
+import { evalParse4 } from './L4-eval-box';
+import { Value4 } from './L4-value-box';
+import { makeClosure4, makeCompoundSExp4 } from './L4-value-box';
+import { isError } from"../Support_functions/error";
+import { allT, first, second } from '../Support_functions/list';
 
 // ========================================================
 // TESTS Parser
@@ -70,7 +71,12 @@ console.log(parseL4("'()"));
 */
 
 // ========================================================
-// Test L4 interpreter
+// Test L4 Box interpreter
+
+// ========================================================
+// TESTS GlobalEnv
+// globalEnvAddBinding("m", 1);
+// assert.deepEqual(applyEnv(theGlobalEnv, "m"), 1);
 
 // ========================================================
 // TESTS
@@ -126,17 +132,17 @@ assert.deepEqual(evalParse4('(if (string? "a") 1 2)'), 1);
 assert.deepEqual(evalParse4('(if (not (string? "a")) 1 2)'), 2);
 
 // Test proc
-assert.deepEqual(evalParse4("(lambda (x) x)"), makeClosure4([makeVarDecl("x")], [makeVarRef("x")], makeEmptyEnv()));
-
+assert.deepEqual(evalParse4("(lambda (x) x)"), 
+                 makeClosure4([makeVarDecl("x")], [makeVarRef("x")], theGlobalEnv));
 
 // Test apply proc
 assert.deepEqual(evalParse4("((lambda (x) (* x x)) 2)"), 4);
 assert.deepEqual(evalParse4("(L4 (define square (lambda (x) (* x x))) (square 3))"), 9);
 assert.deepEqual(evalParse4("(L4 (define f (lambda (x) (if (> x 0) x (- 0 x)))) (f -3))"), 3);
 
-// Recursive procedure = does not work with ExtEnv - requires RecEnv!
-// message: 'Error: Bad argument: "var not found f"'
-assert(isError(evalParse4("(L4 (define f (lambda (x) (if (= x 0) 1 (* x (f (- x 1)))))) (f 3))")));
+// L4 BOX @@
+// Recursive procedure = WORKS as in Scheme
+assert.deepEqual(evalParse4("(L4 (define f (lambda (x) (if (= x 0) 1 (* x (f (- x 1)))))) (f 3))"), 6);
 
 // Recursion with letrec
 assert.deepEqual(evalParse4(`
@@ -178,11 +184,10 @@ assert.deepEqual(evalParse4(`
 // L4 higher order functions
 assert.deepEqual(evalParse4(`
 (L4 (define map
-      (letrec ((map (lambda (f l)
-                      (if (eq? l '())
-                          l
-                          (cons (f (car l)) (map f (cdr l)))))))
-         map))
+      (lambda (f l)
+        (if (eq? l '())
+          l
+          (cons (f (car l)) (map f (cdr l))))))
     (map (lambda (x) (* x x))
       '(1 2 3)))`),
     makeCompoundSExp4([1, 4, 9]));
@@ -190,13 +195,12 @@ assert.deepEqual(evalParse4(`
 assert.deepEqual(evalParse4(`
 (L4 (define empty? (lambda (x) (eq? x '())))
     (define filter
-        (letrec ((filter (lambda (pred l)
-                       (if (empty? l)
-                           l
-                           (if (pred (car l))
-                               (cons (car l) (filter pred (cdr l)))
-                               (filter pred (cdr l)))))))
-            filter))
+      (lambda (pred l)
+        (if (empty? l)
+          l
+          (if (pred (car l))
+              (cons (car l) (filter pred (cdr l)))
+              (filter pred (cdr l))))))
     (filter (lambda (x) (not (= x 2)))
         '(1 2 3 2)))`),
     makeCompoundSExp4([1, 3]));
@@ -206,3 +210,20 @@ assert.deepEqual(evalParse4(`
     ((compose not number?) 2))`),
     false);
 
+// @@ Properly capture variables in closures
+assert.deepEqual(evalParse4(`
+(L4 (define makeAdder (lambda (n) (lambda (y) (+ y n))))
+    (define a6 (makeAdder 6))
+    (define a7 (makeAdder 7))
+    (+ (a6 1) (a7 1)))
+    `),
+    15);
+
+assert.deepEqual(evalParse4(`
+(L4 (define makeCounter (lambda () (let ((c 0)) (lambda () (set! c (+ c 1)) c))))
+    (define c1 (makeCounter))
+    (define c2 (makeCounter))
+    (+ (+ (c1) (c1))
+       (+ (c2) (c2))))
+    `),
+    6);

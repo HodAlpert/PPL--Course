@@ -10,7 +10,6 @@ import { makeEmptyEnv } from '../L3-env';
 import { evalNormalParse, L3normalEval } from './L3_Normal Evaluation';
 import { Value } from '../L3-value';
 import { isClosure, makeClosure, makeCompoundSExp, makeEmptySExp, makeSymbolSExp } from '../L3-value';
-
 const ge = makeEmptyEnv();
 assert.equal(evalNormalParse("1"), 1);
 assert.equal(evalNormalParse("#t"), true);

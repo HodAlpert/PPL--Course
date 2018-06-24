@@ -28,8 +28,8 @@
 import { map, zipWith } from "ramda";
 import { CExp, VarDecl } from './L5-ast';
 import { makeClosure, Value } from './L5-value';
-import { makeBox, setBox, unbox, Box} from './box';
-import { isError } from "./error";
+import { makeBox, setBox, unbox, Box} from '../Support_functions/box';
+import { isError } from "../Support_functions/error";
 
 // ========================================================
 // Frame binding

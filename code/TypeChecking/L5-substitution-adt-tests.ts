@@ -3,7 +3,7 @@ import deepEqual = require("deep-equal");
 import { map, zipWith } from 'ramda';
 import * as S from "./L5-substitution-adt";
 import { makeTVar, parseTE, unparseTExp, TExp } from "./TExp";
-import { hasNoError, isError } from './error';
+import { hasNoError, isError } from '../Support_functions/error';
 
 // Setup
 

@@ -4,7 +4,7 @@ import * as A from "./L5-ast";
 import * as I from "./L5-typeinference";
 import * as E from "./TEnv";
 import * as T from "./TExp";
-import { isError } from "./error";
+import { isError } from "../Support_functions/error";
 
 export const verifyTeOfExpr = (exp: string, texp: string): boolean => {
     const e = A.parse(exp);
@@ -179,4 +179,3 @@ assert(verifyTeOfExpr(`
 assert.deepEqual(verifyTeOfExpr(`
 (letrec ((id (lambda (x) x)))
   (if (id #t) (id 1) (id 2)))`, "Error"), false);
-

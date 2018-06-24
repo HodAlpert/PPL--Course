@@ -7,8 +7,8 @@ import { map, zipWith } from "ramda";
 import p = require("s-expression");
 import { isClosure, isCompoundSExp, isEmptySExp, isSymbolSExp, makeCompoundSExp, makeEmptySExp, makeSymbolSExp, SExp } from './L5-value';
 import { isTVar, makeFreshTVar, parseTExp, unparseTExp, TExp } from './TExp';
-import { getErrorMessages, hasNoError, isError, safeF, safeFL } from './error';
-import { allT, first, rest, second } from './list';
+import { getErrorMessages, hasNoError, isError, safeF, safeFL } from '../Support_functions/error';
+import { allT, first, rest, second } from '../Support_functions/list';
 
 /*
 // =============================================================================
